@@ -1,0 +1,156 @@
+`timescale 1 ns/ 1 ps
+// `define DEFAULT_0
+//`define PHASE_90DEG
+`define PHASE_90DEG_2
+//`define PHASE_450DEG
+
+module pgen_vlg_tst();
+  // reg clk;
+  // reg rst_n;
+   reg sync_in;
+   //wire pls;
+   wire sync_out;
+
+`ifdef DEFAULT_0   
+   pgen i1 (
+	    // port map - connection between master ports and signals/registers   
+	    .pls(pls),
+	    .sync_out(sync_out),
+	    .rst_n(rst_n),
+	    .sync_in(sync_in),
+	    .clk(clk)
+	    );
+   
+   // Clock generator
+   localparam PERIOD = 50.0;
+   always #(PERIOD/2) clk = ~clk;
+ 
+   initial                                                
+     begin                                                  
+	clk = 1'b0;
+	rst_n = 1'b0;
+	#(5*PERIOD) rst_n = 1'b1;	
+     end             
+
+`endif
+
+`ifdef PHASE_90DEG   
+   pgen #(
+	  .P_CLK_FREQ_HZ(20000000),
+	  .P_FREQ_HZ(2000000),
+	  .P_DUTY_CYCLE_PERCENT(10),
+	  .P_PHASE_DEG(360)
+	  )
+   i1 (
+       // port map - connection between master ports and signals/registers   
+       .pls(pls),
+       .sync_out(sync_out),
+       .rst_n(rst_n),
+       .sync_in(sync_in),
+       .clk(clk)
+       );
+
+   // Clock generator
+   localparam PERIOD = 50.0;
+   always #(PERIOD/2) clk = ~clk;
+ 
+   initial                                                
+     begin                                                  
+    	clk = 1'b0;
+	rst_n = 1'b0;
+	`
+	#(5*PERIOD) rst_n = 1'b1;	
+     end             
+   
+`endif //  `ifdef PHASE_90DEG
+ 
+`ifdef PHASE_90DEG_2   
+   reg rst_n_1;
+   reg rst_n_2;
+   wire pls_1;
+   wire pls_2;
+   wire sync;
+   reg 	clk_1;
+   
+   pgen #(
+	  .P_CLK_FREQ_HZ(20000000),
+	  .P_FREQ_HZ(2000000),
+	  .P_DUTY_CYCLE_PERCENT(20),
+	  .P_PHASE_DEG(360)
+	  )
+   i1 (
+       // port map - connection between master ports and signals/registers   
+       .pls(pls_1),
+       .sync_out(sync),
+       .rst_n(rst_n_1),
+       .sync_in(sync_in),
+       .clk(clk_1)
+       );
+
+   pgen #(
+	  .P_CLK_FREQ_HZ(20000000),
+	  .P_FREQ_HZ(2000000),
+	  .P_DUTY_CYCLE_PERCENT(20),
+	  .P_PHASE_DEG(180)
+	  )
+   i2 (
+       // port map - connection between master ports and signals/registers   
+       .pls(pls_2),
+       .sync_out(sync_out),
+       .rst_n(rst_n_2),
+       .sync_in(sync),
+       .clk(clk_1)
+       );
+
+   // Clock generator
+   localparam PERIOD = 50.0;
+   always #(PERIOD/2) clk_1 = ~ clk_1;
+ 
+   initial                                                
+     begin                                                  
+	clk_1 = 1'b0;
+	rst_n_1 = 1'b0;
+	rst_n_2 = 1'b0;
+	#(5*PERIOD) rst_n_1 = 1'b1;
+	#(1*PERIOD) rst_n_2 = 1'b1;
+	#(10*PERIOD) rst_n_1 = 1'b0;
+	#(2*PERIOD) rst_n_1 = 1'b1;
+     end             
+   
+`endif  
+
+`ifdef PHASE_450DEG   
+   pgen #(
+	  .P_CLK_FREQ_HZ(20000000),
+	  .P_FREQ_HZ(2000000),
+	  .P_DUTY_CYCLE_PERCENT(50),
+	  .P_PHASE_DEG(450)
+	  )
+   i1 (
+       // port map - connection between master ports and signals/registers   
+       .pls(pls),
+       .sync_out(sync_out),
+       .rst_n(rst_n),
+       .sync_in(sync_in),
+       .clk(clk)
+       );
+
+      // Clock generator
+   localparam PERIOD = 50.0;
+   always #(PERIOD/2) clk = ~clk;
+ 
+   initial                                                
+     begin                                                  
+	clk = 1'b0;
+	rst_n = 1'b0;
+	`
+	#(5*PERIOD) rst_n = 1'b1;	
+     end             
+
+`endif
+   
+                                       
+endmodule
+
+
+
