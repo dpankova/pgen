@@ -8,6 +8,4 @@ pgen_top.v - the top module for quartus project (look pgen_present)
 
 pgen_present.pdf - PSU IceCube group meeting presentation about pgen
 
-(contains code (s.2,3), top level module scheme (s.4), 
-
-test bench with vsim output (s.5), FPGA/oscilloscope test output(s.6))
+(contains code (s.2,3), top level module scheme (s.4), test bench with vsim output (s.5), FPGA/oscilloscope test output(s.6))
